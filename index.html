@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pulse Pad</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="icon" href="/src-tauri/icons/icon.ico" />
+  </head>
+  <body>
+    <div id="sidebar">
+      <div class="brand">
+        <svg viewBox="0 0 100 100" class="logo-icon">
+          <rect x="15" y="15" width="70" height="70" rx="8" class="st-green" />
+          <path
+            class="st-green"
+            stroke-width="4"
+            d="M25 50 L40 50 L50 30 L60 70 L70 50 L75 50"
+          />
+        </svg>
+        PULSE PAD
+      </div>
+
+      <button class="nav-btn active" data-tab="tab-pulse">
+        <span class="icon-mini">⚡</span> <span id="t-nav-pulse">PZ Pulse</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-map">
+        <span class="icon-mini">🗺️</span> <span id="t-nav-map">PZ Map</span>
+      </button>
+      <button class="nav-btn" data-tab="tab-settings">
+        <span class="icon-mini">⚙️</span>
+        <span id="t-nav-settings">Настройки</span>
+      </button>
+
+      <div class="spacer"></div>
+
+      <div class="lang-container">
+        <button class="lang-globe" title="Выбор языка">🌐</button>
+        <div class="lang-menu" id="lang-menu">
+          <button class="lang-opt active" data-lang="ru">RU</button>
+          <button class="lang-opt" data-lang="ua">UA</button>
+          <button class="lang-opt" data-lang="en">EN</button>
+        </div>
+      </div>
+
+      <button id="btn-toggle-server" class="server-btn off">
+        <span id="t-btn-start">ЗАПУСТИТЬ</span>
+      </button>
+    </div>
+
+    <div id="main-content">
+      <div id="tab-pulse" class="tab-content active">
+        <h2 id="t-pulse-title">Панель состояния</h2>
+        <div class="qr-box" id="qr-pulse">
+          <canvas id="canvas-pulse"></canvas>
+          <div class="url-text" id="url-pulse">Сервер оффлайн</div>
+        </div>
+        <div class="log-area" id="log-pulse"></div>
+      </div>
+
+      <div id="tab-map" class="tab-content">
+        <h2 id="t-map-title">Глобальная карта</h2>
+        <div class="qr-box" id="qr-map">
+          <canvas id="canvas-map"></canvas>
+          <div class="url-text" id="url-map">Сервер оффлайн</div>
+        </div>
+        <div class="log-area" id="log-map"></div>
+      </div>
+
+      <div id="tab-settings" class="tab-content">
+        <h2 id="t-set-title">Конфигурация узла</h2>
+        <div class="input-group">
+          <label id="t-set-pulse">Путь к моду Pulse (web):</label>
+          <input
+            type="text"
+            id="path-pulse"
+            value="D:/Games/Steam/steamapps/workshop/content/108600/3753700423/mods/PZ_Pulse/42/media/web"
+          />
+        </div>
+        <div class="input-group">
+          <label id="t-set-map">Путь к моду Map (web):</label>
+          <input
+            type="text"
+            id="path-map"
+            value="D:/Games/Steam/steamapps/workshop/content/108600/3770149036/mods/PZ_Map/42/media/web"
+          />
+        </div>
+        <div class="input-group">
+          <label id="t-set-lua">Путь к логам (Lua):</label>
+          <input type="text" id="path-lua" value="C:/Users/Vlad/Zomboid/Lua/" />
+        </div>
+        <!-- Тумблеры -->
+        <div class="toggle-group">
+          <label class="switch">
+            <input type="checkbox" id="auto-start-win" />
+            <span class="slider"></span>
+          </label>
+          <span id="t-set-win">Запускать с Windows (в трее)</span>
+        </div>
+
+        <div class="toggle-group">
+          <label class="switch">
+            <input type="checkbox" id="auto-start-pz" />
+            <span class="slider"></span>
+          </label>
+          <span id="t-set-pz">Авто-старт при запуске PZ</span>
+
+          <!-- Пиздатая нативная иконка информации -->
+          <div class="info-wrapper" id="tooltip-pz" data-tooltip="Заглушка">
+            <svg
+              class="info-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+        </div>
+        <!-- Кнопка GitHub -->
+        <a
+          href="#"
+          id="github-link"
+          class="github-badge"
+          title="Автор: Vlaseeds"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+            />
+          </svg>
+        </a>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
