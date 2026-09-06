@@ -7,7 +7,7 @@ use axum::Router;
 use tower_http::services::ServeDir;
 use tower_http::cors::CorsLayer;
 use tokio::sync::oneshot;
-use sysinfo::System;
+use sysinfo::{System, RefreshKind, ProcessRefreshKind}; // Вынесли импорты сюда
 
 use tauri::{State, Manager, Emitter, Wry};
 use tauri::tray::{TrayIconBuilder, TrayIconEvent, MouseButton};
@@ -28,7 +28,9 @@ struct ServerResponse {
     ip: String,
 }
 
+// Состояния, которые висят в памяти
 struct ServerState(Mutex<Option<oneshot::Sender<()>>>);
+struct SysState(Mutex<System>); // Глобальный хранитель процессов для оптимизации
 
 #[derive(Serialize)]
 struct DetectedPaths {
@@ -71,13 +73,11 @@ fn detect_paths() -> DetectedPaths {
     result
 }
 
+// Оптимизированная проверка (не жрет память каждые 3 секунды)
 #[tauri::command]
-fn is_pz_running() -> bool {
-    use sysinfo::{RefreshKind, ProcessRefreshKind};
-    let mut sys = System::new_with_specifics(
-        RefreshKind::new().with_processes(ProcessRefreshKind::new())
-    );
-    sys.refresh_processes();
+fn is_pz_running(state: State<'_, SysState>) -> bool {
+    let mut sys = state.0.lock().unwrap();
+    sys.refresh_processes(); // Просто обновляем инфу, а не создаем с нуля
     sys.processes().values().any(|p| {
         let name = p.name().to_lowercase();
         name.contains("projectzomboid") || name == "pz.exe"
@@ -160,16 +160,27 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-            Some(vec![]),
+            Some(vec!["--hidden"]), // Тот самый флаг для автостарта
         ))
         .manage(ServerState(Mutex::new(None)))
+        // Инициализируем сканер процессов один раз на старте
+        .manage(SysState(Mutex::new(System::new_with_specifics(
+            RefreshKind::new().with_processes(ProcessRefreshKind::new())
+        ))))
         .invoke_handler(tauri::generate_handler![start_server, stop_server, detect_paths, is_pz_running, update_tray_menu, get_free_port, open_github])
         .setup(|app| {
+            // ВОТ ТОТ САМЫЙ КОД, КОТОРЫЙ ТЫ ЗАБЫЛ! 
+            // Он проверяет флаг "--hidden" и прячет окно при автостарте винды
+            if std::env::args().any(|arg| arg == "--hidden") {
+                if let Some(window) = app.get_webview_window("main") {
+                    window.hide().unwrap();
+                }
+            }
+
             let handle = app.handle();
 
             let show_i = MenuItem::with_id(handle, "show", "Pulse Pad", true, None::<&str>)?;
-            let toggle_i =
-                MenuItem::with_id(handle, "toggle", "Запустить сервер", true, None::<&str>)?;
+            let toggle_i = MenuItem::with_id(handle, "toggle", "Запустить сервер", true, None::<&str>)?;
             let quit_i = MenuItem::with_id(handle, "quit", "Выйти", true, None::<&str>)?;
             let menu = Menu::with_items(handle, &[&show_i, &toggle_i, &quit_i])?;
 
@@ -213,7 +224,7 @@ fn main() {
         })
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { api, .. } => {
-                window.hide().unwrap();
+                window.hide().unwrap(); // По крестику прячем в трей
                 api.prevent_close();
             }
             _ => {}

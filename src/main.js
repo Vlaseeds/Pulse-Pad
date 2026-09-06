@@ -284,3 +284,24 @@ if (githubBtn) {
         }
     });
 }
+setInterval(async () => {
+    if (localStorage.getItem('auto_pz') !== 'true') return;
+
+    try {
+        const isPzRunning = await invoke('is_pz_running');
+        const t = translations[currentLang];
+
+        if (isPzRunning && !isServerRunning) {
+            logTo('pulse', t.logPzFound);
+            logTo('map', t.logPzFound);
+            serverBtn.click();
+        } 
+        else if (!isPzRunning && isServerRunning) {
+            logTo('pulse', t.logPzLost);
+            logTo('map', t.logPzLost);
+            serverBtn.click();
+        }
+    } catch (error) {
+        console.error("Ошибка опроса процесса PZ:", error);
+    }
+}, 3000);
