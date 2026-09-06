@@ -106,16 +106,13 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
 .lang-opt:hover { background: #222; color: #fff; }
 .lang-opt.active { color: var(--green); background: #1a2e1f; border-left: 2px solid var(--green); }
 
-/* Глобально убиваем дефолтный скролл */
 ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-/* Включаем строгий дизайн только для зоны логов */
 .log-area::-webkit-scrollbar { width: 6px; }
 .log-area::-webkit-scrollbar-track { background: #0a0a0a; border-radius: 4px; }
 .log-area::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
 .log-area::-webkit-scrollbar-thumb:hover { background: var(--green); }
 
-/* Убираем возможность прокрутки всего окна, чтобы оно стояло мертво */
 #main-content { overflow: hidden; padding: 30px; box-sizing: border-box; }
 
 /* Нативный тултип в стиле Windows 11 */
@@ -146,7 +143,6 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Треугольник (стрелочка) под тултипом */
 .info-wrapper::after {
     content: ''; position: absolute; bottom: 100%; left: 50%;
     transform: translateX(-50%) translateY(10px);

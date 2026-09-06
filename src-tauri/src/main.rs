@@ -135,8 +135,8 @@ async fn start_server(config: Config, state: State<'_, ServerState>) -> Result<S
     });
 
     Ok(ServerResponse {
-        pulse_url: format!("http://{}:{}/pulse/?d=http://{}:{}/data/", ip, port, ip, port),
-        map_url: format!("http://{}:{}/map/?d=http://{}:{}/data/", ip, port, ip, port),
+        pulse_url: format!("http://{}:{}/pulse/?d=http://{}:{}/data/PZ_Pulse/", ip, port, ip, port),
+        map_url: format!("http://{}:{}/map/?d=http://{}:{}/data/PZ_Map/", ip, port, ip, port),
         ip,
     })
 }
@@ -149,7 +149,6 @@ async fn stop_server(state: State<'_, ServerState>) -> Result<(), String> {
     Ok(())
 }
 
-// Открываем ссылку прямо через ядро Windows
 #[tauri::command]
 fn open_github() {
     let _ = std::process::Command::new("cmd")
@@ -193,7 +192,7 @@ fn main() {
                         }
                     }
                     "toggle" => {
-                        let _ = app.emit("tray-toggle-server", ());
+                        let _ = app.emit("tray-toggle-server", "toggled");
                     }
                     _ => {}
                 })

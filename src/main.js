@@ -65,7 +65,6 @@ function setLang(lang) {
     document.getElementById('t-set-pz').innerText = t.setPz;
     serverBtn.querySelector('span').innerText = isServerRunning ? t.btnStop : t.btnStart;
     
-    // Подхватываем перевод для всплывающей подсказки
     document.getElementById('tooltip-pz').setAttribute('data-tooltip', t.tooltipPz);
     
     if (!isServerRunning) {
@@ -170,6 +169,35 @@ serverBtn.addEventListener('click', async () => {
     }
 });
 
+(async () => {
+    await listen('tray-toggle-server', () => {
+        const startBtn = document.getElementById('btn-toggle-server');
+        if (startBtn && !startBtn.disabled) {
+            startBtn.click();
+        }
+    });
+})();
+
+function sanitizePath(value, isLua = false) {
+    let clean = value.trim();
+    if (!clean.includes('file:///')) return clean; 
+
+    if (!isLua) {
+        clean = clean.split('?d=')[0];
+        clean = clean.replace('file:///', '');
+        clean = clean.replace(/\/index\.html$/i, '');
+    } else {
+        if (clean.includes('?d=')) {
+            clean = clean.split('?d=')[1];
+        }
+        clean = clean.replace('file:///', '');
+        clean = clean.replace(/\/PZ_Pulse\/?$/i, '');
+        clean = clean.replace(/\/PZ_Map\/?$/i, '');
+    }
+    
+    return clean.replace(/\//g, '\\');
+}
+
 async function initPaths() {
     const pathPulse = document.getElementById('path-pulse');
     const pathMap = document.getElementById('path-map');
@@ -196,6 +224,9 @@ async function initPaths() {
 
     [pathPulse, pathMap, pathLua].forEach(input => {
         input.addEventListener('input', () => {
+            const isLua = input.id === 'path-lua';
+            input.value = sanitizePath(input.value, isLua); 
+
             localStorage.setItem('saved_pulse', pathPulse.value);
             localStorage.setItem('saved_map', pathMap.value);
             localStorage.setItem('saved_lua', pathLua.value);
@@ -219,15 +250,12 @@ initPort();
 const autoWin = document.getElementById('auto-start-win');
 const autoPz = document.getElementById('auto-start-pz');
 
-// Восстанавливаем состояние автозапуска PZ
 autoPz.checked = localStorage.getItem('auto_pz') === 'true';
 
-// Безопасная проверка автозапуска Windows с отловом ошибок
 isEnabled().then(enabled => {
     autoWin.checked = enabled;
 }).catch(e => console.error("Ошибка проверки автозагрузки:", e));
 
-// Обработка клика с проверкой на вшивость
 autoWin.addEventListener('change', async () => {
     try {
         if (autoWin.checked) {
@@ -239,14 +267,12 @@ autoWin.addEventListener('change', async () => {
         }
     } catch (e) {
         console.error("Блок от системы (нет прав):", e);
-        // Если произошла ошибка — отбрасываем тумблер в исходное состояние
         autoWin.checked = !autoWin.checked; 
     }
 });
 
 autoPz.addEventListener('change', () => localStorage.setItem('auto_pz', autoPz.checked));
 
-// Открытие GitHub через ядро Rust
 const githubBtn = document.getElementById('github-link');
 if (githubBtn) {
     githubBtn.addEventListener('click', async (e) => {
