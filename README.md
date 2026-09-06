@@ -28,6 +28,10 @@ Make sure you have subscribed to these mods before using the app:
 3. **If auto-detect fails:** Don't panic. Just go into the game, open the Mod settings (as described on the mod's Workshop page), click **"Copy dashboard URL"**, and paste that exact link directly into the Pulse Pad settings. The app will automatically clean the link and extract the correct folder path for you!
 4. Click **"Start"**, scan the QR code with your mobile device, and you're good to go.
 
+### 📱 Optional: Pulse Mobile App
+Want the ultimate tactical experience without annoying browser borders on your phone? Check out our native Android companion app. It features a built-in QR scanner, smart zoom controls, and keeps your screen awake while playing.
+👉 **[Download Pulse Mobile for Android](https://github.com/Vlaseeds/Pulse-Mobile)**
+
 ### 🛡 Important: Antivirus & SmartScreen
 Since this is indie software without a paid certificate, Windows might throw a `Wacatac.C!ml` warning. This is a false positive because the app registers in startup and hosts a local server. The code is fully open-source here on GitHub. Simply click *«More info» -> «Run anyway»*.
 
@@ -52,6 +56,10 @@ Since this is indie software without a paid certificate, Windows might throw a `
 3. **Якщо автопошук не спрацював:** Просто зайди в гру, відкрий налаштування мода (як описано на його сторінці в Workshop), натисни **"Copy dashboard URL"** і встав цю скопійовану сторінку прямо в налаштування Pulse Pad. Програма сама обріже зайве і знайде правильний шлях до папки!
 4. Натисни **"Запустити"**, наведи камеру телефону на QR-код — і все готово.
 
+### 📱 Опціонально: Додаток Pulse Mobile
+Бажаєш отримати ідеальний тактичний досвід без дратівливих рамок браузера на телефоні? Забирай наш нативний мобільний компаньйон для Android. Усередині: вбудований QR-сканер, розумне масштабування та захист від загасання екрану під час гри.
+👉 **[Завантажити Pulse Mobile для Android](https://github.com/Vlaseeds/Pulse-Mobile)**
+
 ### 🛡 Важливо: Антивірус та SmartScreen
 Оскільки це інді-софт без платного сертифіката, Windows може видати вікно `Wacatac.C!ml`. Це хибне спрацьовування через те, що програма лізе в автозавантаження та піднімає сервер. Код повністю чистий і відкритий тут, на GitHub. Просто натисни *«Детальніше» -> «Виконати в будь-якому випадку»*.
 
@@ -75,6 +83,10 @@ Since this is indie software without a paid certificate, Windows might throw a `
 2. Запусти утилиту. Она автоматически просканирует твои диски и найдет нужные папки модов.
 3. **Если автопоиск не сработал:** Просто зайди в игру, открой настройки мода (как указано на его странице в Workshop), нажми **"Copy dashboard URL"** и вставь эту скопированную ссылку прямо в настройки Pulse Pad. Программа сама очистит ссылку от мусора и достанет правильный путь к папке!
 4. Нажми **"Запустить"**, наведи камеру телефона на появившийся QR-код — и всё готово.
+
+### 📱 Опционально: Приложение Pulse Mobile
+Хочешь получить идеальный тактический опыт без бесячих рамок браузера на телефоне? Забирай наш нативный мобильный компаньон для Android. Внутри: встроенный сканер QR-кодов, умный контроль масштаба и защита от затухания экрана во время игры.
+👉 **[Скачать Pulse Mobile для Android](https://github.com/Vlaseeds/Pulse-Mobile)**
 
 ### 🛡 Важно: Антивирус и SmartScreen
 Так как это инди-софт без платного корпоративного сертификата, Windows может выдать окно с угрозой `Wacatac.C!ml`. Это ложное срабатывание из-за того, что программа лезет в автозагрузку и поднимает веб-сервер. Код полностью чист и открыт здесь, на GitHub. При запуске просто нажми *«Подробнее» -> «Выполнить в любом случае»*.
