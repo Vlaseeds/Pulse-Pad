@@ -7,7 +7,7 @@ use axum::Router;
 use tower_http::services::ServeDir;
 use tower_http::cors::CorsLayer;
 use tokio::sync::oneshot;
-use sysinfo::{System, RefreshKind, ProcessRefreshKind}; // Вынесли импорты сюда
+use sysinfo::{System, RefreshKind, ProcessRefreshKind}; 
 
 use tauri::{State, Manager, Emitter, Wry};
 use tauri::tray::{TrayIconBuilder, TrayIconEvent, MouseButton};
@@ -28,9 +28,8 @@ struct ServerResponse {
     ip: String,
 }
 
-// Состояния, которые висят в памяти
 struct ServerState(Mutex<Option<oneshot::Sender<()>>>);
-struct SysState(Mutex<System>); // Глобальный хранитель процессов для оптимизации
+struct SysState(Mutex<System>); 
 
 #[derive(Serialize)]
 struct DetectedPaths {
@@ -73,11 +72,10 @@ fn detect_paths() -> DetectedPaths {
     result
 }
 
-// Оптимизированная проверка (не жрет память каждые 3 секунды)
 #[tauri::command]
 fn is_pz_running(state: State<'_, SysState>) -> bool {
     let mut sys = state.0.lock().unwrap();
-    sys.refresh_processes(); // Просто обновляем инфу, а не создаем с нуля
+    sys.refresh_processes(); 
     sys.processes().values().any(|p| {
         let name = p.name().to_lowercase();
         name.contains("projectzomboid") || name == "pz.exe"
@@ -160,17 +158,14 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_autostart::init(
             tauri_plugin_autostart::MacosLauncher::LaunchAgent,
-            Some(vec!["--hidden"]), // Тот самый флаг для автостарта
+            Some(vec!["--hidden"]),
         ))
         .manage(ServerState(Mutex::new(None)))
-        // Инициализируем сканер процессов один раз на старте
         .manage(SysState(Mutex::new(System::new_with_specifics(
             RefreshKind::new().with_processes(ProcessRefreshKind::new())
         ))))
         .invoke_handler(tauri::generate_handler![start_server, stop_server, detect_paths, is_pz_running, update_tray_menu, get_free_port, open_github])
         .setup(|app| {
-            // ВОТ ТОТ САМЫЙ КОД, КОТОРЫЙ ТЫ ЗАБЫЛ! 
-            // Он проверяет флаг "--hidden" и прячет окно при автостарте винды
             if std::env::args().any(|arg| arg == "--hidden") {
                 if let Some(window) = app.get_webview_window("main") {
                     window.hide().unwrap();
@@ -224,7 +219,7 @@ fn main() {
         })
         .on_window_event(|window, event| match event {
             tauri::WindowEvent::CloseRequested { api, .. } => {
-                window.hide().unwrap(); // По крестику прячем в трей
+                window.hide().unwrap();
                 api.prevent_close();
             }
             _ => {}

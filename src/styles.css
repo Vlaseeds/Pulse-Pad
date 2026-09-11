@@ -115,7 +115,6 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
 
 #main-content { overflow: hidden; padding: 30px; box-sizing: border-box; }
 
-/* Нативный тултип в стиле Windows 11 */
 .info-wrapper {
     position: relative; display: inline-flex; align-items: center;
     margin-left: 8px; cursor: help;
