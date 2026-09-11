@@ -16,17 +16,20 @@ const translations = {
     ru: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Настройки", btnStart: "ЗАПУСТИТЬ", btnStop: "ОСТАНОВИТЬ", titlePulse: "Панель состояния", titleMap: "Глобальная карта", titleSet: "Конфигурация узла", setPulse: "Путь к моду Pulse (web):", setMap: "Путь к моду Map (web):", setLua: "Путь к логам (Lua):", setWin: "Запускать с Windows (в трее)", setPz: "Авто-старт при запуске PZ", statusOffline: "Оффлайн", statusWait: "Ожидание запуска...", logStart: "Сервер запущен. Адрес:", logStop: "Сервер остановлен.", logErr: "Ошибка:", trayShow: "Pulse Pad", trayStart: "Запустить сервер", trayStop: "Остановить сервер", trayQuit: "Выйти",
         tooltipPz: "Если включено, сервер сам стартует и останавливается вместе с игрой. При попытке ручного запуска без открытой игры он немедленно отключится.",
         logPzFound: "Обнаружен процесс Zomboid. Запуск сервера...", 
-        logPzLost: "Процесс Zomboid завершен. Остановка сервера..." 
+        logPzLost: "Процесс Zomboid завершен. Остановка сервера...",
+        authorTooltip: "Автор: Vlaseeds"
     },
     ua: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Налаштування", btnStart: "ЗАПУСТИТИ", btnStop: "ЗУПИНИТИ", titlePulse: "Панель стану", titleMap: "Глобальна мапа", titleSet: "Конфігурація вузла", setPulse: "Шлях до моду Pulse (web):", setMap: "Шлях до моду Map (web):", setLua: "Шлях до логів (Lua):", setWin: "Запускати з Windows (у треї)", setPz: "Авто-старт при запуску PZ", statusOffline: "Офлайн", statusWait: "Очікування запуску...", logStart: "Сервер запущено. Адреса:", logStop: "Сервер зупинено.", logErr: "Помилка:", trayShow: "Pulse Pad", trayStart: "Запустити сервер", trayStop: "Зупинити сервер", trayQuit: "Вийти",
         tooltipPz: "Якщо увімкнено, сервер автоматично стартує та зупиняється разом із грою. При спробі ручного запуску без відкритої гри він одразу вимкнеться.",
         logPzFound: "Виявлено процес Zomboid. Запуск сервера...", 
-        logPzLost: "Процес Zomboid завершено. Зупинка сервера..." 
+        logPzLost: "Процес Zomboid завершено. Зупинка сервера...",
+        authorTooltip: "Розробник: Vlaseeds"
     },
     en: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Settings", btnStart: "START SERVER", btnStop: "STOP SERVER", titlePulse: "Status Panel", titleMap: "Global Map", titleSet: "Node Configuration", setPulse: "Pulse mod path (web):", setMap: "Map mod path (web):", setLua: "Logs path (Lua):", setWin: "Run on Windows startup", setPz: "Auto-start with PZ", statusOffline: "Offline", statusWait: "Waiting to start...", logStart: "Server started. Address:", logStop: "Server stopped.", logErr: "Error:", trayShow: "Pulse Pad", trayStart: "Start Server", trayStop: "Stop Server", trayQuit: "Quit",
         tooltipPz: "Server automatically starts and stops with the game. If forced to start manually without the game running, it will immediately shut down.",
         logPzFound: "Project Zomboid process detected. Starting server...", 
-        logPzLost: "Project Zomboid process ended. Stopping server..." 
+        logPzLost: "Project Zomboid process ended. Stopping server...",
+        authorTooltip: "Author: Vlaseeds"
     }
 };
 
@@ -65,7 +68,8 @@ function setLang(lang) {
     document.getElementById('t-set-pz').innerText = t.setPz;
     serverBtn.querySelector('span').innerText = isServerRunning ? t.btnStop : t.btnStart;
     
-    document.getElementById('tooltip-pz').setAttribute('data-tooltip', t.tooltipPz);
+  document.getElementById('tooltip-pz').setAttribute('data-tooltip', t.tooltipPz);
+  document.getElementById('github-link').setAttribute('title', t.authorTooltip);
     
     if (!isServerRunning) {
         document.getElementById('url-pulse').innerText = t.statusOffline;

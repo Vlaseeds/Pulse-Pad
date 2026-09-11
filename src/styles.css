@@ -160,16 +160,35 @@ input:checked + .slider:before { transform: translateX(20px); background-color: 
 
 #tab-settings { position: relative; } 
 
-.github-badge {
+.footer-credits {
     position: absolute;
     bottom: 0px;
     right: 0px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+.version-text {
+    color: #444;
+    font-size: 12px;
+    font-weight: bold;
+    font-family: monospace;
+    user-select: none;
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.version-text:hover {
+    color: var(--green);
+}
+
+.github-badge {
     width: 28px;
     height: 28px;
     color: #444;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
-    z-index: 10;
 }
 
 .github-badge:hover {
