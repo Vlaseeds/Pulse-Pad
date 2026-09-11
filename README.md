@@ -38,6 +38,10 @@
 3. Launch the app (it automatically finds the mod paths).
 4. Click **Start Server** and scan the QR code with your phone.
 
+### 📱 Optional: Pulse Mobile App
+Hate browser borders taking up your screen space? Grab our native Android companion app. It comes with a built-in QR scanner, smart zoom, and keeps your screen awake while you fight off the horde.
+👉 **[Download Pulse Mobile for Android](https://github.com/Vlaseeds/Pulse-Mobile)**
+
 ### 🛠 What if auto-detect fails?
 If the app cannot find your mod folders automatically, don't worry. Simply launch Project Zomboid, open the mod settings in-game, click **"Copy dashboard URL"**, and paste that raw link directly into the Pulse Pad settings. The app will clean it up and locate the correct folder automatically.
 
@@ -80,6 +84,10 @@ A massive shoutout to **[qwerto](https://steamcommunity.com/id/qwerto/myworkshop
 3. Запусти програму (вона сама знайде шляхи до модів).
 4. Натисни **Запустити сервер** та відскануй QR-код телефоном.
 
+### 📱 Опціонально: Додаток Pulse Mobile
+Бісять рамки браузера, які крадуть місце на екрані? Забирай наш нативний мобільний компаньйон для Android. Усередині: вбудований QR-сканер, розумний масштаб та захист від загасання екрану, поки ти відбиваєшся від орди.
+👉 **[Завантажити Pulse Mobile для Android](https://github.com/Vlaseeds/Pulse-Mobile)**
+
 ### 🛠 Що робити, якщо автопошук не спрацював?
 Якщо програма не змогла знайти папки з модами, нічого страшного. Зайди у Project Zomboid, відкрий налаштування мода в грі, натисни **"Copy dashboard URL"** і встав це посилання прямо в налаштування Pulse Pad. Утиліта сама очистить текст і знайде правильний шлях.
 
@@ -121,6 +129,10 @@ A massive shoutout to **[qwerto](https://steamcommunity.com/id/qwerto/myworkshop
 2. Зайди в раздел [Releases](../../releases/latest) и скачай последний `Pulse.Pad_vX.X.X_setup.exe`.
 3. Запусти программу (она сама найдет пути к модам).
 4. Нажми **Запустить сервер** и отсканируй QR-код телефоном.
+
+### 📱 Опционально: Приложение Pulse Mobile
+Бесят рамки браузера, которые жрут место на экране? Забирай наш нативный мобильный компаньон для Android. Внутри: встроенный сканер QR-кодов, умный масштаб и защита от затухания экрана, пока ты отбиваешься от толпы мертвецов.
+👉 **[Скачать Pulse Mobile для Android](https://github.com/Vlaseeds/Pulse-Mobile)**
 
 ### 🛠 Что делать, если автопоиск не сработал?
 Если программа не смогла найти папки с модами, не переживай. Зайди в игру, открой настройки мода, нажми **"Copy dashboard URL"** и вставь эту ссылку прямо в настройки Pulse Pad. Утилита сама очистит текст и найдет правильный путь к папке.
