@@ -46,7 +46,7 @@ struct TrayState {
 
 #[tauri::command]
 async fn get_free_port() -> Result<u16, String> {
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:0").await.map_err(|e| format!("Ошибка бинда: {}", e))?;
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:0").await.map_err(|e| format!("Bind error: {}", e))?;
     Ok(listener.local_addr().unwrap().port())
 }
 
@@ -99,17 +99,36 @@ async fn start_server(config: Config, state: State<'_, ServerState>) -> Result<S
     let _ = stop_server(state.clone()).await;
 
     if !is_safe_path(&config.pulse_path) || !is_safe_path(&config.map_path) || !is_safe_path(&config.lua_path) {
-        return Err("ОШИБКА БЕЗОПАСНОСТИ: Попытка расшарить системный каталог!".into());
+        return Err("SECURITY ERROR: Attempt to share a system directory!".into());
     }
 
-    let network_interfaces = list_afinet_netifas().map_err(|e| format!("Ошибка сети: {}", e))?;
+    let network_interfaces = list_afinet_netifas().map_err(|e| format!("Network error: {}", e))?;
     let mut ip = String::from("127.0.0.1");
 
     for (name, net_ip) in network_interfaces.iter() {
         let ip_str = net_ip.to_string();
-        if net_ip.is_ipv4() && !ip_str.starts_with("127.") && !ip_str.starts_with("26.") && !ip_str.starts_with("25.") {
-            ip = ip_str.clone();
-            if name.to_lowercase().contains("wi-fi") || name.to_lowercase().contains("ethernet") { break; }
+        let name_lower = name.to_lowercase();
+        
+        if net_ip.is_ipv4() 
+            && !ip_str.starts_with("127.") 
+            && !ip_str.starts_with("169.254.")
+            && !ip_str.starts_with("26.") 
+            && !ip_str.starts_with("25.") 
+        {
+
+            if !name_lower.contains("virtual") 
+                && !name_lower.contains("vmware") 
+                && !name_lower.contains("vbox")
+                && !name_lower.contains("hamachi")
+                && !name_lower.contains("radmin")
+                && !name_lower.contains("tailscale")
+                && !name_lower.contains("zerotier")
+            {
+                ip = ip_str.clone();
+                if name_lower.contains("wi-fi") || name_lower.contains("ethernet") { 
+                    break; 
+                }
+            }
         }
     }
 
@@ -123,12 +142,12 @@ async fn start_server(config: Config, state: State<'_, ServerState>) -> Result<S
     *state.0.lock().unwrap() = Some(tx);
     
     let addr = format!("0.0.0.0:{}", config.port);
-    let listener = tokio::net::TcpListener::bind(&addr).await.map_err(|e| format!("Порт {} заблокирован: {}", config.port, e))?;
+    let listener = tokio::net::TcpListener::bind(&addr).await.map_err(|e| format!("Port {} is blocked: {}", config.port, e))?;
     let port = config.port; 
 
     tokio::spawn(async move {
         if let Err(e) = axum::serve(listener, app).with_graceful_shutdown(async { rx.await.ok(); }).await {
-            eprintln!("Ошибка сервера: {}", e);
+            eprintln!("Server error: {}", e);
         }
     });
 
@@ -225,5 +244,5 @@ fn main() {
             _ => {}
         })
         .run(tauri::generate_context!())
-        .expect("Ошибка при запуске Tauri");
+        .expect("Error starting Tauri");
 }

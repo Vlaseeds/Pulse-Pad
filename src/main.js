@@ -13,13 +13,13 @@ const langOpts = document.querySelectorAll('.lang-opt');
 let isServerRunning = false;
 
 const translations = {
-    ru: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Настройки", btnStart: "ЗАПУСТИТЬ", btnStop: "ОСТАНОВИТЬ", titlePulse: "Панель состояния", titleMap: "Глобальная карта", titleSet: "Конфигурация узла", setPulse: "Путь к моду Pulse (web):", setMap: "Путь к моду Map (web):", setLua: "Путь к логам (Lua):", setWin: "Запускать с Windows (в трее)", setPz: "Авто-старт при запуске PZ", statusOffline: "Оффлайн", statusWait: "Ожидание запуска...", logStart: "Сервер запущен. Адрес:", logStop: "Сервер остановлен.", logErr: "Ошибка:", trayShow: "Pulse Pad", trayStart: "Запустить сервер", trayStop: "Остановить сервер", trayQuit: "Выйти",
+    ru: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Настройки", btnStart: "ЗАПУСТИТЬ", btnStop: "ОСТАНОВИТЬ", titlePulse: "Панель состояния", titleMap: "Глобальная карта", titleSet: "Конфигурация узла", setPulse: "Путь к моду Pulse (web):", setMap: "Путь к моду Map (web):", setLua: "Путь к логам (Lua):", setWin: "Запускать с Windows (в трее)", setPz: "Автозапуск при старте PZ", statusOffline: "Оффлайн", statusWait: "Ожидание запуска...", logStart: "Сервер запущен. Адрес:", logStop: "Сервер остановлен.", logErr: "Ошибка:", trayShow: "Pulse Pad", trayStart: "Запустить сервер", trayStop: "Остановить сервер", trayQuit: "Выйти",
         tooltipPz: "Если включено, сервер сам стартует и останавливается вместе с игрой. При попытке ручного запуска без открытой игры он немедленно отключится.",
         logPzFound: "Обнаружен процесс Zomboid. Запуск сервера...", 
         logPzLost: "Процесс Zomboid завершен. Остановка сервера...",
         authorTooltip: "Автор: Vlaseeds"
     },
-    ua: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Налаштування", btnStart: "ЗАПУСТИТИ", btnStop: "ЗУПИНИТИ", titlePulse: "Панель стану", titleMap: "Глобальна мапа", titleSet: "Конфігурація вузла", setPulse: "Шлях до моду Pulse (web):", setMap: "Шлях до моду Map (web):", setLua: "Шлях до логів (Lua):", setWin: "Запускати з Windows (у треї)", setPz: "Авто-старт при запуску PZ", statusOffline: "Офлайн", statusWait: "Очікування запуску...", logStart: "Сервер запущено. Адреса:", logStop: "Сервер зупинено.", logErr: "Помилка:", trayShow: "Pulse Pad", trayStart: "Запустити сервер", trayStop: "Зупинити сервер", trayQuit: "Вийти",
+    ua: { navPulse: "PZ Pulse", navMap: "PZ Map", navSet: "Налаштування", btnStart: "ЗАПУСТИТИ", btnStop: "ЗУПИНИТИ", titlePulse: "Панель стану", titleMap: "Глобальна мапа", titleSet: "Конфігурація вузла", setPulse: "Шлях до моду Pulse (web):", setMap: "Шлях до моду Map (web):", setLua: "Шлях до логів (Lua):", setWin: "Запускати з Windows (у треї)", setPz: "Автозапуск при старті PZ", statusOffline: "Офлайн", statusWait: "Очікування запуску...", logStart: "Сервер запущено. Адреса:", logStop: "Сервер зупинено.", logErr: "Помилка:", trayShow: "Pulse Pad", trayStart: "Запустити сервер", trayStop: "Зупинити сервер", trayQuit: "Вийти",
         tooltipPz: "Якщо увімкнено, сервер автоматично стартує та зупиняється разом із грою. При спробі ручного запуску без відкритої гри він одразу вимкнеться.",
         logPzFound: "Виявлено процес Zomboid. Запуск сервера...", 
         logPzLost: "Процес Zomboid завершено. Зупинка сервера...",
@@ -40,7 +40,7 @@ async function syncTray() {
     const toggleText = isServerRunning ? t.trayStop : t.trayStart;
     try {
         await invoke('update_tray_menu', { show: t.trayShow, toggle: toggleText, quit: t.trayQuit });
-    } catch (e) { console.error("Ошибка обновления трея:", e); }
+    } catch (e) { console.error("Tray update error:", e); }
 }
 
 langGlobe.addEventListener('click', (e) => {
@@ -222,7 +222,7 @@ async function initPaths() {
             if (autoPaths.map) pathMap.value = autoPaths.map;
             if (autoPaths.lua) pathLua.value = autoPaths.lua + "/";
         } catch (e) {
-            console.error("Ошибка автопоиска:", e);
+            console.error("Auto-detect paths error:", e);
         }
     }
 
@@ -264,13 +264,13 @@ autoWin.addEventListener('change', async () => {
     try {
         if (autoWin.checked) {
             await enable();
-            console.log("Добавлено в автозапуск");
+            console.log("Added to autostart");
         } else {
             await disable();
-            console.log("Удалено из автозапуска");
+            console.log("Removed from autostart");
         }
     } catch (e) {
-        console.error("Блок от системы (нет прав):", e);
+        console.error("Blocked by system (no permissions):", e);
         autoWin.checked = !autoWin.checked; 
     }
 });
@@ -284,7 +284,7 @@ if (githubBtn) {
         try {
             await invoke('open_github');
         } catch (err) {
-            console.error("Ошибка открытия ссылки:", err);
+            console.error("Failed to open link:", err);
         }
     });
 }
@@ -306,6 +306,6 @@ setInterval(async () => {
             serverBtn.click();
         }
     } catch (error) {
-        console.error("Ошибка опроса процесса PZ:", error);
+        console.error("PZ process polling error:", error);
     }
 }, 3000);
